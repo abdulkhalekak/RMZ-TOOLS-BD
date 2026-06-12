@@ -22,8 +22,9 @@
 
         body {
             background: radial-gradient(circle at 10% 20%, #0B1120, #0A0F1C);
-            padding: 24px 20px;
+            padding: 0;
             min-height: 100vh;
+            padding-top: 0;
         }
 
         /* আধুনিক স্ক্রলবার */
@@ -43,24 +44,33 @@
             background: #60A5FA;
         }
 
+        /* কন্টেইনারকে পুরো উইন্ডো কভার করতে সাহায্য */
         .container {
             max-width: 1400px;
             margin: 0 auto;
             background: rgba(15, 23, 42, 0.7);
             backdrop-filter: blur(2px);
-            border-radius: 2rem;
+            border-radius: 0 0 2rem 2rem;
             box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(59,130,246,0.2);
             overflow: hidden;
             transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
-        /* হেডার প্রোফেশনাল গ্রেডিয়েন্ট */
+        /* হেডার প্রফেশনাল গ্রেডিয়েন্ট - এখন স্টিকি! */
         .header {
             background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
-            padding: 28px 24px;
+            padding: 20px 24px;
             text-align: center;
             border-bottom: 1px solid rgba(59,130,246,0.4);
-            position: relative;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
         }
         .header::before {
             content: '';
@@ -73,7 +83,7 @@
         }
         .header h1 {
             margin: 0;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 800;
             background: linear-gradient(135deg, #FFFFFF, #94A3B8);
             -webkit-background-clip: text;
@@ -89,17 +99,17 @@
             -webkit-background-clip: unset;
             background-clip: unset;
             color: #3B82F6;
-            font-size: 2rem;
+            font-size: 1.8rem;
         }
         .header p {
-            margin-top: 12px;
+            margin-top: 8px;
             color: #94A3B8;
             font-weight: 500;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             letter-spacing: 0.3px;
         }
 
-        /* ট্যাবস - মডার্ন গ্লাসমরফিজম */
+        /* ট্যাবস - মডার্ন গ্লাসমরফিজম, এখন হেডারের নিচে আটকে থাকবে না কারণ হেডার স্টিকি, এরা সাধারণত স্ক্রল করলে চলে যাবে, কিন্তু হেডার থাকবে */
         .tabs {
             display: flex;
             flex-wrap: wrap;
@@ -108,13 +118,15 @@
             padding: 6px 12px 0 12px;
             gap: 8px;
             border-bottom: 1px solid rgba(71, 85, 105, 0.5);
+            position: relative;
+            z-index: 90;
         }
         .tab-btn {
             flex: 1 1 auto;
             min-width: 130px;
             background: transparent;
             border: none;
-            padding: 14px 12px;
+            padding: 12px 12px;
             font-size: 0.9rem;
             font-weight: 600;
             color: #CBD5E1;
@@ -148,6 +160,7 @@
             display: none;
             padding: 24px 20px 28px;
             animation: fadeUp 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            flex: 1;
         }
         .tab-content.active {
             display: block;
@@ -203,7 +216,7 @@
         /* iframe স্টাইল - প্রিমিয়াম লুক */
         iframe {
             width: 100%;
-            min-height: 70vh;
+            min-height: 65vh;
             border: none;
             border-radius: 1.5rem;
             background: #0F172A;
@@ -212,7 +225,7 @@
         }
         @media (min-width: 1024px) {
             iframe {
-                min-height: 75vh;
+                min-height: 70vh;
             }
         }
 
@@ -290,19 +303,25 @@
         /* রেসপন্সিভ */
         @media (max-width: 680px) {
             body {
-                padding: 12px;
+                padding: 0;
             }
             .tab-btn {
                 min-width: auto;
                 padding: 10px 8px;
-                font-size: 0.75rem;
+                font-size: 0.7rem;
                 gap: 6px;
             }
             .tab-btn i {
-                font-size: 1rem;
+                font-size: 0.9rem;
             }
             .header h1 {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
+            }
+            .header h1 i {
+                font-size: 1.3rem;
+            }
+            .header p {
+                font-size: 0.7rem;
             }
             .info-note-wrapper {
                 padding: 12px 14px;
@@ -331,13 +350,20 @@
             font-size: 0.7rem;
             color: #475569;
             border-top: 1px solid rgba(71,85,105,0.4);
-            padding-top: 16px;
+            padding: 16px 0;
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        /* কন্টেন্ট এরিয়া যেন স্ক্রোল করে আর হেডার স্টিকি থাকে */
+        .main-content {
+            flex: 1;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
+    <!-- হেডার এখন স্টিকি, স্ক্রোল করলেও উপরে থাকবে -->
     <div class="header">
         <h1>
             <i class="fas fa-crown"></i> 
@@ -364,59 +390,61 @@
         </button>
     </div>
 
-    <!-- ২এফএ জেনারেটর -->
-    <div id="tab1" class="tab-content active">
-        <div class="info-note-wrapper">
-            <div class="info-note">
-                <i class="fas fa-key"></i> ২-ফ্যাক্টর অথেনটিকেশন কোড জেনারেটর - রিয়েল টাইম
+    <div class="main-content">
+        <!-- ২এফএ জেনারেটর -->
+        <div id="tab1" class="tab-content active">
+            <div class="info-note-wrapper">
+                <div class="info-note">
+                    <i class="fas fa-key"></i> ২-ফ্যাক্টর অথেনটিকেশন কোড জেনারেটর - রিয়েল টাইম
+                </div>
+                <div class="badge-pro">প্রো টুল</div>
             </div>
-            <div class="badge-pro">প্রো টুল</div>
+            <iframe src="https://abdulkhalekak.github.io/My2fa-gen/" title="2FA Generator"></iframe>
         </div>
-        <iframe src="https://abdulkhalekak.github.io/My2fa-gen/" title="2FA Generator"></iframe>
-    </div>
 
-    <!-- কুকি টু ইউআইডি -->
-    <div id="tab2" class="tab-content">
-        <div class="info-note-wrapper">
-            <div class="info-note">
-                <i class="fas fa-chalkboard-user"></i> একাধিক কুকি পেস্ট করে ইউজার আইডি বের করুন
+        <!-- কুকি টু ইউআইডি -->
+        <div id="tab2" class="tab-content">
+            <div class="info-note-wrapper">
+                <div class="info-note">
+                    <i class="fas fa-chalkboard-user"></i> একাধিক কুকি পেস্ট করে ইউজার আইডি বের করুন
+                </div>
+                <div class="badge-pro">স্মার্ট পার্সার</div>
             </div>
-            <div class="badge-pro">স্মার্ট পার্সার</div>
+            <iframe src="https://abdulkhalekak.github.io/Cookies-to-uid/" title="Cookie to UID"></iframe>
         </div>
-        <iframe src="https://abdulkhalekak.github.io/Cookies-to-uid/" title="Cookie to UID"></iframe>
-    </div>
 
-    <!-- ফেইসবুক আইডি রিলিজ -->
-    <div id="tab3" class="tab-content">
-        <div class="info-note-wrapper">
-            <div class="info-note">
-                <i class="fas fa-rocket"></i> ফেইসবুক আইডি রিলিজ টুল - স্মার্ট আনলক
+        <!-- ফেইসবুক আইডি রিলিজ -->
+        <div id="tab3" class="tab-content">
+            <div class="info-note-wrapper">
+                <div class="info-note">
+                    <i class="fas fa-rocket"></i> ফেইসবুক আইডি রিলিজ টুল - স্মার্ট আনলক
+                </div>
+                <div class="badge-pro">অটোমেশন</div>
             </div>
-            <div class="badge-pro">অটোমেশন</div>
+            <iframe src="https://abdulkhalekak.github.io/Fb-id-relece-/" title="FB ID Release"></iframe>
         </div>
-        <iframe src="https://abdulkhalekak.github.io/Fb-id-relece-/" title="FB ID Release"></iframe>
-    </div>
 
-    <!-- ফেসবুক লাইভ চেকার -->
-    <div id="tab4" class="tab-content">
-        <div class="info-note-wrapper">
-            <div class="info-note">
-                <i class="fab fa-facebook-square"></i> ফেসবুক অ্যাকাউন্ট সচল (Live) নাকি নষ্ট (Die) চেক করুন
+        <!-- ফেসবুক লাইভ চেকার -->
+        <div id="tab4" class="tab-content">
+            <div class="info-note-wrapper">
+                <div class="info-note">
+                    <i class="fab fa-facebook-square"></i> ফেসবুক অ্যাকাউন্ট সচল (Live) নাকি নষ্ট (Die) চেক করুন
+                </div>
+                <div class="badge-pro">ফাস্ট চেক</div>
             </div>
-            <div class="badge-pro">ফাস্ট চেক</div>
+            <iframe src="https://dongvanmmo.com/check-live-fb/" title="Facebook Live Checker"></iframe>
         </div>
-        <iframe src="https://dongvanmmo.com/check-live-fb/" title="Facebook Live Checker"></iframe>
-    </div>
 
-    <!-- ইনস্টাগ্রাম লাইভ চেকার -->
-    <div id="tab5" class="tab-content">
-        <div class="info-note-wrapper">
-            <div class="info-note">
-                <i class="fab fa-instagram-square"></i> ইনস্টাগ্রাম অ্যাকাউন্ট সচল (Live) নাকি নষ্ট (Die) যাচাই করুন
+        <!-- ইনস্টাগ্রাম লাইভ চেকার -->
+        <div id="tab5" class="tab-content">
+            <div class="info-note-wrapper">
+                <div class="info-note">
+                    <i class="fab fa-instagram-square"></i> ইনস্টাগ্রাম অ্যাকাউন্ট সচল (Live) নাকি নষ্ট (Die) যাচাই করুন
+                </div>
+                <div class="badge-pro">রিয়েল-টাইম</div>
             </div>
-            <div class="badge-pro">রিয়েল-টাইম</div>
+            <iframe src="https://dongvanmmo.com/check-live-ig/" title="Instagram Live Checker"></iframe>
         </div>
-        <iframe src="https://dongvanmmo.com/check-live-ig/" title="Instagram Live Checker"></iframe>
     </div>
     <div class="footer-note">
         <i class="fas fa-lock"></i> RMZ TEAM | নিরাপদ ও দ্রুত টুলস প্ল্যাটফর্ম
@@ -473,7 +501,6 @@
             toast.classList.add('show');
             setTimeout(() => {
                 toast.classList.remove('show');
-                // রিসেট আইকন
                 setTimeout(() => {
                     toast.innerHTML = `<i class="fas fa-check-circle"></i> কপি হয়েছে!`;
                 }, 300);
@@ -487,16 +514,13 @@
             try {
                 const iframeDoc = iframeElement.contentDocument || iframeElement.contentWindow?.document;
                 if (!iframeDoc) return;
-                // কপি ইভেন্ট লিসেনার
                 iframeDoc.addEventListener('copy', () => {
                     setTimeout(() => {
                         window.showCopyToast("📋 কপি সফল!");
                     }, 80);
                 });
-                // ক্লিকের মাধ্যমে বাটন ইভেন্ট (অনেক টুলে কাস্টম কপি থাকে)
                 iframeDoc.body.addEventListener('click', (e) => {
                     const target = e.target;
-                    // চেক করা হচ্ছে ক্লিক করা এলিমেন্টে copy বা ক্লিপবোর্ড রিলেটেড ক্লাস
                     let copyElement = target.closest('[onclick*="copy"], .copy-btn, [data-copy], .btn-copy, .copy-text, [onclick*="Clipboard"]');
                     if (copyElement || (target.innerText && (target.innerText.toLowerCase().includes('copy') || target.getAttribute('title')?.toLowerCase().includes('copy')))) {
                         setTimeout(() => {
@@ -504,9 +528,7 @@
                         }, 150);
                     }
                 });
-                // অতিরিক্ত: যেকোনো execCommand বা writeText হুক করা যায় না কিন্তু ব্যবহারকারীর কপি হলে টোস্ট দেখবে
             } catch(e) {
-                // CORS বা cross-origin policy কারণে iframe অ্যাক্সেস নাই - কোনো সমস্যা নাই
                 console.debug("Iframe cors restriction:", iframeElement.src);
             }
         }
@@ -515,24 +537,20 @@
             if(iframe.addEventListener) {
                 iframe.addEventListener('load', function onLoad() {
                     tryInjectCopyListener(iframe);
-                    // পুনরায় লোড হলে ওয়ার্নিং এভয়েড
                     iframe.removeEventListener('load', onLoad);
                 });
-                // যদি ইতিমধ্যে লোডেড হয়ে থাকে
                 if(iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
                     tryInjectCopyListener(iframe);
                 }
             }
         });
         
-        // ডকুমেন্টে গ্লোবাল কপি সাপোর্ট (বাইরের অংশের জন্য)
         document.addEventListener('copy', function() {
             setTimeout(() => {
                 window.showCopyToast("📄 কপি হয়েছে!");
             }, 50);
         });
         
-        // কর্ডোভা বা মোবাইলের জন্য ক্লিপবোর্ড এপি (প্লাগইন থাকলে)
         document.addEventListener('deviceready', function() {
             console.log("Cordova device ready | RMZ Tools");
             if(window.cordova && window.cordova.plugins && window.cordova.plugins.clipboard) {
@@ -542,17 +560,13 @@
             }
         });
         
-        // নোটিফিকেশনে টেলিগ্রাম ফ্লোটিংয়ে স্পর্শ ফিডব্যাক
         const tgBtn = document.querySelector('.telegram-btn');
         if(tgBtn) {
             tgBtn.addEventListener('click', () => {
-                // ইতোমধ্যে লিংকে href আছেই, কিন্তু অ্যানিমেশন রাখা যায়
                 console.log("Telegram channel redirect");
             });
         }
         
-        // for better iframe UX: প্রতিটি ট্যাবে iframe রিলোড নাই কিন্তু সোর্স ঠিক আছে
-        // অতিরিক্ত: লোকাল স্টোরেজে ট্যাব মেমরি অপশন (ঐচ্ছিক)
         const lastTab = localStorage.getItem('rmz_last_active_tab');
         if(lastTab && document.getElementById(lastTab)) {
             switchTab(lastTab);
@@ -564,7 +578,6 @@
             });
         });
         
-        // কিছু iframe এ manually dynamic copy notification handle করার জন্য parent থেকে মেসেজ ইভেন্ট
         window.addEventListener('message', (event) => {
             if(event.data && typeof event.data === 'object') {
                 if(event.data.type === 'COPY_SUCCESS' || event.data.action === 'copied') {
@@ -573,8 +586,7 @@
             }
         });
         
-        // নিচে কাস্টম ফাংশন live-checkers এর স্টাইল enhance
-        console.log("RMZ Tools Professional UI Loaded");
+        console.log("RMZ Tools Professional UI Loaded | Header is now sticky!");
     })();
 </script>
 </body>
