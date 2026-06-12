@@ -1,1231 +1,581 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#060B14">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>RMZ TEAM | প্রফেশনাল টুলস হাব</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-<style>
-/* ══════════════════════════════════════════
-   DESIGN TOKENS — CYBERPUNK OPS THEME
-══════════════════════════════════════════ */
-:root {
-  --bg-void:       #060B14;
-  --bg-deep:       #0A1120;
-  --bg-panel:      #0D1628;
-  --bg-glass:      rgba(13, 22, 40, 0.85);
-  --bg-card:       rgba(15, 26, 48, 0.9);
-
-  --accent-cyan:   #00E5FF;
-  --accent-blue:   #2979FF;
-  --accent-green:  #00E676;
-  --accent-amber:  #FFB300;
-  --accent-red:    #FF1744;
-  --accent-purple: #AA00FF;
-
-  --text-primary:  #E8F0FE;
-  --text-secondary:#8BA3C7;
-  --text-muted:    #3D5275;
-
-  --border-glow:   rgba(0,229,255,0.15);
-  --border-dim:    rgba(61,82,117,0.5);
-
-  --font-display:  'Syne', sans-serif;
-  --font-mono:     'JetBrains Mono', monospace;
-  --font-bengali:  'Noto Sans Bengali', sans-serif;
-
-  --radius-sm:     8px;
-  --radius-md:     14px;
-  --radius-lg:     20px;
-  --radius-xl:     28px;
-
-  --glow-cyan:     0 0 20px rgba(0,229,255,0.25), 0 0 60px rgba(0,229,255,0.08);
-  --glow-blue:     0 0 20px rgba(41,121,255,0.3), 0 0 60px rgba(41,121,255,0.1);
-  --shadow-card:   0 24px 48px rgba(0,0,0,0.6), 0 0 0 1px var(--border-glow);
-}
-
-/* ══════════════════════════════════════════
-   RESET + BASE
-══════════════════════════════════════════ */
-*, *::before, *::after {
-  margin: 0; padding: 0; box-sizing: border-box;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg-void);
-  font-family: var(--font-bengali);
-  min-height: 100vh;
-  overflow-x: hidden;
-  position: relative;
-}
-
-/* Animated mesh background */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 80% 50% at 20% -10%, rgba(0,229,255,0.06) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 40% at 80% 110%, rgba(41,121,255,0.07) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(170,0,255,0.03) 0%, transparent 70%);
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* Grid overlay */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
-  background-size: 40px 40px;
-  pointer-events: none;
-  z-index: 0;
-}
-
-/* ══════════════════════════════════════════
-   SCROLLBAR
-══════════════════════════════════════════ */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: var(--bg-void); }
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, var(--accent-cyan), var(--accent-blue));
-  border-radius: 999px;
-}
-
-/* ══════════════════════════════════════════
-   LAYOUT WRAPPER
-══════════════════════════════════════════ */
-.app-shell {
-  position: relative;
-  z-index: 1;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 20px 16px 100px;
-}
-
-/* ══════════════════════════════════════════
-   HEADER
-══════════════════════════════════════════ */
-.header {
-  position: relative;
-  padding: 36px 32px 30px;
-  margin-bottom: 0;
-  overflow: hidden;
-}
-
-/* Top rainbow border */
-.header::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg,
-    var(--accent-cyan) 0%,
-    var(--accent-blue) 25%,
-    var(--accent-purple) 50%,
-    var(--accent-green) 75%,
-    var(--accent-cyan) 100%);
-  background-size: 200%;
-  animation: shimmer 4s linear infinite;
-}
-
-/* Glow orb behind logo */
-.header::after {
-  content: '';
-  position: absolute;
-  top: -60px; left: 50%;
-  transform: translateX(-50%);
-  width: 400px; height: 200px;
-  background: radial-gradient(ellipse, rgba(0,229,255,0.07) 0%, transparent 70%);
-  pointer-events: none;
-}
-
-@keyframes shimmer {
-  0% { background-position: 0% 0; }
-  100% { background-position: 200% 0; }
-}
-
-.header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.brand-icon {
-  position: relative;
-  width: 56px; height: 56px;
-  display: flex; align-items: center; justify-content: center;
-}
-
-.brand-icon::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 16px;
-  background: linear-gradient(135deg, rgba(0,229,255,0.15), rgba(41,121,255,0.1));
-  border: 1px solid rgba(0,229,255,0.3);
-  box-shadow: var(--glow-cyan), inset 0 1px 0 rgba(255,255,255,0.05);
-}
-
-.brand-icon i {
-  position: relative;
-  font-size: 1.6rem;
-  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  filter: drop-shadow(0 0 8px rgba(0,229,255,0.5));
-}
-
-.brand-text {}
-
-.brand-name {
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  font-weight: 800;
-  letter-spacing: 3px;
-  background: linear-gradient(135deg, #FFFFFF 0%, var(--accent-cyan) 50%, var(--accent-blue) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  line-height: 1;
-}
-
-.brand-tagline {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-  margin-top: 4px;
-  text-transform: uppercase;
-}
-
-.header-stats {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.stat-chip {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 7px 14px;
-  background: rgba(0,229,255,0.05);
-  border: 1px solid rgba(0,229,255,0.12);
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-secondary);
-}
-
-.stat-chip .dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: var(--accent-green);
-  box-shadow: 0 0 6px var(--accent-green);
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(0.85); }
-}
-
-/* ══════════════════════════════════════════
-   MAIN CARD
-══════════════════════════════════════════ */
-.main-card {
-  background: var(--bg-glass);
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid var(--border-glow);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-card);
-  overflow: hidden;
-}
-
-/* ══════════════════════════════════════════
-   TABS NAV
-══════════════════════════════════════════ */
-.tabs-nav {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  background: rgba(6, 11, 20, 0.7);
-  border-bottom: 1px solid var(--border-dim);
-  position: relative;
-}
-
-.tabs-nav::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg,
-    transparent,
-    var(--border-glow),
-    rgba(0,229,255,0.3),
-    var(--border-glow),
-    transparent);
-}
-
-.tab-btn {
-  position: relative;
-  background: transparent;
-  border: none;
-  padding: 20px 8px;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  color: var(--text-muted);
-  overflow: hidden;
-  font-family: var(--font-bengali);
-}
-
-.tab-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0,229,255,0.05), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.tab-btn:hover::before { opacity: 1; }
-.tab-btn:hover { color: var(--text-secondary); }
-
-/* Active indicator bar */
-.tab-btn::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 20%; right: 20%;
-  height: 2px;
-  background: var(--accent-cyan);
-  border-radius: 2px 2px 0 0;
-  transform: scaleX(0);
-  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 12px var(--accent-cyan);
-}
-
-.tab-btn.active::after { transform: scaleX(1); }
-
-.tab-btn.active {
-  color: var(--accent-cyan);
-  background: linear-gradient(180deg, rgba(0,229,255,0.07) 0%, transparent 100%);
-}
-
-.tab-btn.active .tab-icon-wrap {
-  box-shadow: 0 0 16px rgba(0,229,255,0.3);
-  border-color: rgba(0,229,255,0.4);
-  background: rgba(0,229,255,0.1);
-}
-
-.tab-btn.active .tab-icon-wrap i {
-  color: var(--accent-cyan);
-  filter: drop-shadow(0 0 6px rgba(0,229,255,0.6));
-}
-
-.tab-icon-wrap {
-  width: 40px; height: 40px;
-  border-radius: 12px;
-  display: flex; align-items: center; justify-content: center;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid var(--border-dim);
-  transition: all 0.3s;
-}
-
-.tab-icon-wrap i {
-  font-size: 1.1rem;
-  color: var(--text-muted);
-  transition: all 0.3s;
-}
-
-.tab-btn:hover .tab-icon-wrap {
-  border-color: rgba(0,229,255,0.25);
-  background: rgba(0,229,255,0.05);
-}
-
-.tab-btn:hover .tab-icon-wrap i { color: var(--text-secondary); }
-
-.tab-label {
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.3px;
-  text-align: center;
-  line-height: 1.3;
-  transition: color 0.3s;
-}
-
-.tab-badge {
-  position: absolute;
-  top: 10px; right: 10px;
-  font-family: var(--font-mono);
-  font-size: 0.52rem;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 999px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-}
-
-.badge-cyan {
-  background: rgba(0,229,255,0.12);
-  color: var(--accent-cyan);
-  border: 1px solid rgba(0,229,255,0.25);
-}
-
-.badge-green {
-  background: rgba(0,230,118,0.12);
-  color: var(--accent-green);
-  border: 1px solid rgba(0,230,118,0.25);
-}
-
-.badge-amber {
-  background: rgba(255,179,0,0.12);
-  color: var(--accent-amber);
-  border: 1px solid rgba(255,179,0,0.25);
-}
-
-/* ══════════════════════════════════════════
-   TAB CONTENT AREA
-══════════════════════════════════════════ */
-.tab-content {
-  display: none;
-  animation: fadeUp 0.4s cubic-bezier(0.2, 0.8, 0.3, 1) both;
-  padding: 24px;
-}
-
-.tab-content.active { display: block; }
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ══════════════════════════════════════════
-   INFO BANNER
-══════════════════════════════════════════ */
-.info-banner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 14px;
-  padding: 14px 20px;
-  margin-bottom: 20px;
-  background: rgba(0, 229, 255, 0.04);
-  border: 1px solid rgba(0,229,255,0.12);
-  border-radius: var(--radius-md);
-  position: relative;
-  overflow: hidden;
-}
-
-.info-banner::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: linear-gradient(180deg, var(--accent-cyan), var(--accent-blue));
-  border-radius: 0 2px 2px 0;
-}
-
-.info-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.83rem;
-  color: var(--text-secondary);
-  font-family: var(--font-bengali);
-}
-
-.info-left i {
-  font-size: 1rem;
-  color: var(--accent-cyan);
-  filter: drop-shadow(0 0 4px rgba(0,229,255,0.4));
-}
-
-.info-right {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.tag-chip {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  padding: 4px 12px;
-  border-radius: 999px;
-}
-
-.tag-pro {
-  background: linear-gradient(135deg, rgba(0,229,255,0.15), rgba(41,121,255,0.15));
-  color: var(--accent-cyan);
-  border: 1px solid rgba(0,229,255,0.3);
-  box-shadow: 0 0 12px rgba(0,229,255,0.1);
-}
-
-.tag-live {
-  display: flex; align-items: center; gap: 5px;
-  background: rgba(0,230,118,0.12);
-  color: var(--accent-green);
-  border: 1px solid rgba(0,230,118,0.25);
-}
-
-.tag-live .blink {
-  width: 5px; height: 5px;
-  border-radius: 50%;
-  background: var(--accent-green);
-  animation: blink-anim 1.2s ease-in-out infinite;
-}
-
-@keyframes blink-anim {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.2; }
-}
-
-/* ══════════════════════════════════════════
-   IFRAME WRAPPER
-══════════════════════════════════════════ */
-.iframe-shell {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 1px solid var(--border-glow);
-  box-shadow: 0 0 0 1px rgba(0,229,255,0.05), 0 32px 64px rgba(0,0,0,0.5);
-}
-
-.iframe-shell::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, rgba(0,229,255,0.04) 0%, transparent 40%);
-  pointer-events: none;
-  z-index: 2;
-}
-
-/* Scanline overlay */
-.iframe-shell::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,229,255,0.007) 2px,
-    rgba(0,229,255,0.007) 4px
-  );
-  pointer-events: none;
-  z-index: 1;
-  border-radius: var(--radius-lg);
-}
-
-.iframe-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 16px;
-  background: rgba(6, 11, 20, 0.9);
-  border-bottom: 1px solid var(--border-dim);
-}
-
-.topbar-dots {
-  display: flex;
-  gap: 6px;
-}
-
-.topbar-dots span {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-}
-
-.dot-r { background: #FF5F57; box-shadow: 0 0 6px rgba(255,95,87,0.5); }
-.dot-y { background: #FEBC2E; box-shadow: 0 0 6px rgba(254,188,46,0.4); }
-.dot-g { background: #28C840; box-shadow: 0 0 6px rgba(40,200,64,0.4); }
-
-.topbar-url {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 0.5px;
-  max-width: 50%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.topbar-secure {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  color: var(--accent-green);
-}
-
-.topbar-secure i { font-size: 0.7rem; }
-
-.iframe-loading {
-  position: absolute;
-  inset: 44px 0 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  background: var(--bg-deep);
-  z-index: 10;
-  transition: opacity 0.4s ease;
-}
-
-.iframe-loading.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.loader-ring {
-  width: 48px; height: 48px;
-  border-radius: 50%;
-  border: 2px solid rgba(0,229,255,0.1);
-  border-top-color: var(--accent-cyan);
-  border-right-color: var(--accent-blue);
-  animation: spin 0.9s linear infinite;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.loader-text {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--text-muted);
-  letter-spacing: 2px;
-  animation: flicker 2s ease-in-out infinite;
-}
-
-@keyframes flicker {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-iframe {
-  width: 100%;
-  min-height: 68vh;
-  border: none;
-  display: block;
-  background: var(--bg-deep);
-}
-
-@media (min-width: 1024px) {
-  iframe { min-height: 72vh; }
-}
-
-/* ══════════════════════════════════════════
-   FOOTER
-══════════════════════════════════════════ */
-.main-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 14px 24px;
-  border-top: 1px solid var(--border-dim);
-  background: rgba(6,11,20,0.6);
-}
-
-.footer-brand {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--text-muted);
-  letter-spacing: 1px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.footer-brand i { color: var(--accent-cyan); }
-
-.footer-links {
-  display: flex;
-  gap: 16px;
-}
-
-.footer-link {
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  color: var(--text-muted);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  letter-spacing: 0.5px;
-  transition: color 0.2s;
-}
-
-.footer-link:hover { color: var(--accent-cyan); }
-.footer-link i { font-size: 0.75rem; }
-
-/* ══════════════════════════════════════════
-   FLOATING TELEGRAM BUTTON
-══════════════════════════════════════════ */
-.fab-container {
-  position: fixed;
-  bottom: 28px;
-  right: 24px;
-  z-index: 2000;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 12px;
-}
-
-.fab-label {
-  background: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-glow);
-  color: var(--text-secondary);
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.5px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  white-space: nowrap;
-  opacity: 0;
-  transform: translateX(10px);
-  transition: all 0.3s;
-  pointer-events: none;
-}
-
-.fab-container:hover .fab-label {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.fab-btn {
-  position: relative;
-  width: 58px; height: 58px;
-  border-radius: 18px;
-  background: linear-gradient(135deg, #0F2744, #091929);
-  border: 1px solid rgba(41,121,255,0.35);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,229,255,0.08), var(--glow-blue);
-  text-decoration: none;
-}
-
-.fab-btn::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 18px;
-  background: linear-gradient(135deg, rgba(0,229,255,0.1), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.fab-btn:hover::before { opacity: 1; }
-
-.fab-btn:hover {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 16px 32px rgba(0,0,0,0.6), var(--glow-cyan);
-  border-color: rgba(0,229,255,0.4);
-}
-
-.fab-btn i {
-  font-size: 1.5rem;
-  color: #38BDF8;
-  transition: all 0.3s;
-  filter: drop-shadow(0 0 8px rgba(56,189,248,0.5));
-}
-
-.fab-btn:hover i {
-  color: var(--accent-cyan);
-  filter: drop-shadow(0 0 12px rgba(0,229,255,0.7));
-}
-
-/* Pulse ring */
-.fab-btn::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border-radius: 22px;
-  border: 1px solid rgba(0,229,255,0.2);
-  animation: fab-pulse 3s ease-in-out infinite;
-}
-
-@keyframes fab-pulse {
-  0%, 100% { transform: scale(1); opacity: 0.5; }
-  50% { transform: scale(1.08); opacity: 0; }
-}
-
-/* ══════════════════════════════════════════
-   TOAST NOTIFICATION
-══════════════════════════════════════════ */
-.toast {
-  position: fixed;
-  bottom: 100px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--bg-glass);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--border-glow);
-  color: var(--text-primary);
-  padding: 12px 24px;
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  z-index: 3000;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  opacity: 0;
-  pointer-events: none;
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: var(--shadow-card);
-  letter-spacing: 0.5px;
-}
-
-.toast.show {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
-.toast i { color: var(--accent-green); font-size: 1rem; }
-
-/* ══════════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════════ */
-@media (max-width: 768px) {
-  .app-shell { padding: 10px 10px 90px; }
-  .header { padding: 24px 16px 20px; }
-  .brand-name { font-size: 1.35rem; }
-  .header-stats { display: none; }
-
-  .tabs-nav {
-    grid-template-columns: repeat(5, 1fr);
-  }
-
-  .tab-btn { padding: 14px 4px; }
-  .tab-icon-wrap { width: 32px; height: 32px; }
-  .tab-icon-wrap i { font-size: 0.9rem; }
-  .tab-label { font-size: 0.58rem; }
-  .tab-badge { display: none; }
-
-  .tab-content { padding: 14px 12px; }
-  .info-banner { padding: 10px 14px; }
-  iframe { min-height: 65vh; }
-
-  .main-footer {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 12px 16px;
-  }
-
-  .fab-btn { width: 50px; height: 50px; border-radius: 15px; }
-  .fab-btn i { font-size: 1.25rem; }
-}
-
-/* ══════════════════════════════════════════
-   CORNER DECORATION
-══════════════════════════════════════════ */
-.corner-deco {
-  position: absolute;
-  width: 24px; height: 24px;
-  pointer-events: none;
-}
-
-.corner-deco.tl { top: 0; left: 0; border-top: 2px solid var(--accent-cyan); border-left: 2px solid var(--accent-cyan); }
-.corner-deco.tr { top: 0; right: 0; border-top: 2px solid var(--accent-cyan); border-right: 2px solid var(--accent-cyan); }
-.corner-deco.bl { bottom: 0; left: 0; border-bottom: 2px solid var(--accent-cyan); border-left: 2px solid var(--accent-cyan); }
-.corner-deco.br { bottom: 0; right: 0; border-bottom: 2px solid var(--accent-cyan); border-right: 2px solid var(--accent-cyan); }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="theme-color" content="#0F172A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="RMZ Tools">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <title>RMZ TEAM | প্রফেশনাল টুলস হাব</title>
+    <!-- Font Awesome 6 (free icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at 10% 20%, #0B1120, #0A0F1C);
+            padding: 24px 20px;
+            min-height: 100vh;
+        }
+
+        /* আধুনিক স্ক্রলবার */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1E293B;
+            border-radius: 12px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3B82F6;
+            border-radius: 12px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #60A5FA;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(2px);
+            border-radius: 2rem;
+            box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(59,130,246,0.2);
+            overflow: hidden;
+            transition: all 0.2s;
+        }
+
+        /* হেডার প্রোফেশনাল গ্রেডিয়েন্ট */
+        .header {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            padding: 28px 24px;
+            text-align: center;
+            border-bottom: 1px solid rgba(59,130,246,0.4);
+            position: relative;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #3B82F6, #10B981, #8B5CF6, #F59E0B);
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #FFFFFF, #94A3B8);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header h1 i {
+            background: none;
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            color: #3B82F6;
+            font-size: 2rem;
+        }
+        .header p {
+            margin-top: 12px;
+            color: #94A3B8;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+
+        /* ট্যাবস - মডার্ন গ্লাসমরফিজম */
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            background: rgba(30, 41, 59, 0.6);
+            backdrop-filter: blur(8px);
+            padding: 6px 12px 0 12px;
+            gap: 8px;
+            border-bottom: 1px solid rgba(71, 85, 105, 0.5);
+        }
+        .tab-btn {
+            flex: 1 1 auto;
+            min-width: 130px;
+            background: transparent;
+            border: none;
+            padding: 14px 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #CBD5E1;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border-radius: 1.25rem 1.25rem 0 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            letter-spacing: 0.3px;
+        }
+        .tab-btn i {
+            font-size: 1.2rem;
+        }
+        .tab-btn:hover {
+            color: white;
+            background: rgba(59,130,246,0.2);
+        }
+        .tab-btn.active {
+            background: linear-gradient(145deg, #1E293B, #111827);
+            color: #3B82F6;
+            box-shadow: 0 -2px 0 #3B82F6, 0 4px 12px rgba(0,0,0,0.2);
+        }
+        .tab-btn.active i {
+            color: #60A5FA;
+        }
+
+        /* ট্যাব কন্টেন্ট */
+        .tab-content {
+            display: none;
+            padding: 24px 20px 28px;
+            animation: fadeUp 0.35s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ইনফো নোট কার্ড */
+        .info-note-wrapper {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(4px);
+            border-left: 4px solid #3B82F6;
+            border-radius: 1rem;
+            padding: 14px 20px;
+            margin-bottom: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        .info-note {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #E2E8F0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .info-note i {
+            color: #3B82F6;
+            font-size: 1.1rem;
+        }
+        .badge-pro {
+            background: #10B981;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        /* iframe স্টাইল - প্রিমিয়াম লুক */
+        iframe {
+            width: 100%;
+            min-height: 70vh;
+            border: none;
+            border-radius: 1.5rem;
+            background: #0F172A;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.5);
+            transition: all 0.2s;
+        }
+        @media (min-width: 1024px) {
+            iframe {
+                min-height: 75vh;
+            }
+        }
+
+        /* ফ্লোটিং টেলিগ্রাম বাটন - এলিগ্যান্ট */
+        .telegram-float {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 1100;
+        }
+        .telegram-btn {
+            background: linear-gradient(145deg, #1E293B, #0F172A);
+            width: 60px;
+            height: 60px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 12px 20px -8px rgba(0,0,0,0.5), 0 0 0 1px rgba(59,130,246,0.3);
+            transition: all 0.25s ease;
+            backdrop-filter: blur(8px);
+        }
+        .telegram-btn i {
+            font-size: 32px;
+            color: #38BDF8;
+            transition: transform 0.2s;
+        }
+        .telegram-btn:hover {
+            transform: scale(1.07);
+            box-shadow: 0 18px 28px -8px black;
+        }
+        .telegram-btn:hover i {
+            color: #7DD3FC;
+            transform: scale(1.02);
+        }
+
+        /* কপি টোস্ট */
+        .copy-toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #111827E6;
+            backdrop-filter: blur(12px);
+            color: #E0F2FE;
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            z-index: 1200;
+            display: none;
+            white-space: nowrap;
+            border: 1px solid #3B82F6;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            letter-spacing: 0.3px;
+        }
+        .copy-toast i {
+            margin-right: 8px;
+            color: #10B981;
+        }
+        .copy-toast.show {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeSlide 1.8s ease forwards;
+        }
+        @keyframes fadeSlide {
+            0% { opacity: 0; bottom: 80px; }
+            12% { opacity: 1; bottom: 100px; }
+            80% { opacity: 1; bottom: 100px; }
+            100% { opacity: 0; bottom: 80px; visibility: hidden; }
+        }
+
+        /* রেসপন্সিভ */
+        @media (max-width: 680px) {
+            body {
+                padding: 12px;
+            }
+            .tab-btn {
+                min-width: auto;
+                padding: 10px 8px;
+                font-size: 0.75rem;
+                gap: 6px;
+            }
+            .tab-btn i {
+                font-size: 1rem;
+            }
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            .info-note-wrapper {
+                padding: 12px 14px;
+            }
+            .telegram-btn {
+                width: 52px;
+                height: 52px;
+            }
+            .telegram-btn i {
+                font-size: 28px;
+            }
+            .copy-toast {
+                font-size: 0.75rem;
+                padding: 8px 18px;
+                white-space: nowrap;
+            }
+        }
+
+        /* লোডিং স্টাইল enhance */
+        iframe[src] {
+            transition: opacity 0.2s;
+        }
+        .footer-note {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.7rem;
+            color: #475569;
+            border-top: 1px solid rgba(71,85,105,0.4);
+            padding-top: 16px;
+        }
+    </style>
 </head>
 <body>
 
-<div class="app-shell">
-
-  <!-- HEADER -->
-  <div class="header main-card" style="margin-bottom: 16px; border-radius: var(--radius-xl);">
-    <div class="header-inner">
-      <div class="brand">
-        <div class="brand-icon">
-          <i class="fas fa-crown"></i>
-        </div>
-        <div class="brand-text">
-          <div class="brand-name">RMZ TEAM</div>
-          <div class="brand-tagline">// Professional Tools Hub · Secure & Fast</div>
-        </div>
-      </div>
-      <div class="header-stats">
-        <div class="stat-chip">
-          <span class="dot"></span>
-          SYSTEM ONLINE
-        </div>
-        <div class="stat-chip">
-          <i class="fas fa-shield-halved" style="color:var(--accent-cyan);font-size:0.75rem;"></i>
-          SSL SECURED
-        </div>
-        <div class="stat-chip">
-          <i class="fas fa-bolt" style="color:var(--accent-amber);font-size:0.75rem;"></i>
-          5 TOOLS ACTIVE
-        </div>
-      </div>
+<div class="container">
+    <div class="header">
+        <h1>
+            <i class="fas fa-crown"></i> 
+            RMZ TEAM
+        </h1>
+        <p><i class="fas fa-bolt"></i> প্রফেশনাল টুলস হাব | সিকিউর ও ফাস্ট</p>
     </div>
-  </div>
-
-  <!-- MAIN CARD -->
-  <div class="main-card">
-
-    <!-- TABS NAV -->
-    <nav class="tabs-nav" role="tablist">
-
-      <button class="tab-btn active" data-tab="tab1" role="tab" aria-selected="true">
-        <span class="tab-badge badge-cyan">PRO</span>
-        <div class="tab-icon-wrap">
-          <i class="fas fa-shield-alt"></i>
-        </div>
-        <span class="tab-label">২এফএ<br>জেনারেটর</span>
-      </button>
-
-      <button class="tab-btn" data-tab="tab2" role="tab">
-        <span class="tab-badge badge-green">SMART</span>
-        <div class="tab-icon-wrap">
-          <i class="fas fa-cookie-bite"></i>
-        </div>
-        <span class="tab-label">কুকি টু<br>ইউআইডি</span>
-      </button>
-
-      <button class="tab-btn" data-tab="tab3" role="tab">
-        <span class="tab-badge badge-amber">AUTO</span>
-        <div class="tab-icon-wrap">
-          <i class="fas fa-unlock-alt"></i>
-        </div>
-        <span class="tab-label">আইডি<br>রিলিজ</span>
-      </button>
-
-      <button class="tab-btn" data-tab="tab4" role="tab">
-        <span class="tab-badge badge-cyan">LIVE</span>
-        <div class="tab-icon-wrap">
-          <i class="fab fa-facebook"></i>
-        </div>
-        <span class="tab-label">FB লাইভ<br>চেকার</span>
-      </button>
-
-      <button class="tab-btn" data-tab="tab5" role="tab">
-        <span class="tab-badge badge-cyan">LIVE</span>
-        <div class="tab-icon-wrap">
-          <i class="fab fa-instagram"></i>
-        </div>
-        <span class="tab-label">IG লাইভ<br>চেকার</span>
-      </button>
-
-    </nav>
+    
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="tab1">
+            <i class="fas fa-shield-alt"></i> <span>২এফএ জেনারেটর</span>
+        </button>
+        <button class="tab-btn" data-tab="tab2">
+            <i class="fas fa-cookie-bite"></i> <span>কুকি টু ইউআইডি</span>
+        </button>
+        <button class="tab-btn" data-tab="tab3">
+            <i class="fas fa-unlock-alt"></i> <span>ফেইসবুক আইডি রিলিজ</span>
+        </button>
+        <button class="tab-btn" data-tab="tab4">
+            <i class="fab fa-facebook"></i> <span>ফেসবুক লাইভ চেকার</span>
+        </button>
+        <button class="tab-btn" data-tab="tab5">
+            <i class="fab fa-instagram"></i> <span>ইন্সটাগ্রাম লাইভ চেকার</span>
+        </button>
+    </div>
 
     <!-- ২এফএ জেনারেটর -->
     <div id="tab1" class="tab-content active">
-      <div class="info-banner">
-        <div class="info-left">
-          <i class="fas fa-key"></i>
-          ২-ফ্যাক্টর অথেনটিকেশন কোড জেনারেটর — রিয়েল টাইম TOTP
+        <div class="info-note-wrapper">
+            <div class="info-note">
+                <i class="fas fa-key"></i> ২-ফ্যাক্টর অথেনটিকেশন কোড জেনারেটর - রিয়েল টাইম
+            </div>
+            <div class="badge-pro">প্রো টুল</div>
         </div>
-        <div class="info-right">
-          <span class="tag-chip tag-pro">Pro Tool</span>
-          <span class="tag-chip tag-live"><span class="blink"></span>REALTIME</span>
-        </div>
-      </div>
-      <div class="iframe-shell">
-        <div class="corner-deco tl"></div><div class="corner-deco tr"></div>
-        <div class="corner-deco bl"></div><div class="corner-deco br"></div>
-        <div class="iframe-topbar">
-          <div class="topbar-dots">
-            <span class="dot-r"></span>
-            <span class="dot-y"></span>
-            <span class="dot-g"></span>
-          </div>
-          <div class="topbar-url">abdulkhalekak.github.io/My2fa-gen/</div>
-          <div class="topbar-secure"><i class="fas fa-lock"></i>SECURE</div>
-        </div>
-        <div class="iframe-loading" id="load1">
-          <div class="loader-ring"></div>
-          <div class="loader-text">LOADING MODULE...</div>
-        </div>
-        <iframe src="https://abdulkhalekak.github.io/My2fa-gen/" title="2FA Generator"
-          onload="hideLoader('load1')" loading="lazy"></iframe>
-      </div>
+        <iframe src="https://abdulkhalekak.github.io/My2fa-gen/" title="2FA Generator"></iframe>
     </div>
 
     <!-- কুকি টু ইউআইডি -->
     <div id="tab2" class="tab-content">
-      <div class="info-banner">
-        <div class="info-left">
-          <i class="fas fa-chalkboard-user"></i>
-          একাধিক কুকি পেস্ট করে ইউজার আইডি বের করুন — স্মার্ট পার্সার
+        <div class="info-note-wrapper">
+            <div class="info-note">
+                <i class="fas fa-chalkboard-user"></i> একাধিক কুকি পেস্ট করে ইউজার আইডি বের করুন
+            </div>
+            <div class="badge-pro">স্মার্ট পার্সার</div>
         </div>
-        <div class="info-right">
-          <span class="tag-chip tag-pro">Smart Parser</span>
-        </div>
-      </div>
-      <div class="iframe-shell">
-        <div class="corner-deco tl"></div><div class="corner-deco tr"></div>
-        <div class="corner-deco bl"></div><div class="corner-deco br"></div>
-        <div class="iframe-topbar">
-          <div class="topbar-dots">
-            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-          </div>
-          <div class="topbar-url">abdulkhalekak.github.io/Cookies-to-uid/</div>
-          <div class="topbar-secure"><i class="fas fa-lock"></i>SECURE</div>
-        </div>
-        <div class="iframe-loading" id="load2">
-          <div class="loader-ring"></div>
-          <div class="loader-text">LOADING MODULE...</div>
-        </div>
-        <iframe src="https://abdulkhalekak.github.io/Cookies-to-uid/" title="Cookie to UID"
-          onload="hideLoader('load2')" loading="lazy"></iframe>
-      </div>
+        <iframe src="https://abdulkhalekak.github.io/Cookies-to-uid/" title="Cookie to UID"></iframe>
     </div>
 
     <!-- ফেইসবুক আইডি রিলিজ -->
     <div id="tab3" class="tab-content">
-      <div class="info-banner">
-        <div class="info-left">
-          <i class="fas fa-rocket"></i>
-          ফেইসবুক আইডি রিলিজ টুল — স্মার্ট অটোমেশন আনলক সিস্টেম
+        <div class="info-note-wrapper">
+            <div class="info-note">
+                <i class="fas fa-rocket"></i> ফেইসবুক আইডি রিলিজ টুল - স্মার্ট আনলক
+            </div>
+            <div class="badge-pro">অটোমেশন</div>
         </div>
-        <div class="info-right">
-          <span class="tag-chip tag-pro">Automation</span>
-        </div>
-      </div>
-      <div class="iframe-shell">
-        <div class="corner-deco tl"></div><div class="corner-deco tr"></div>
-        <div class="corner-deco bl"></div><div class="corner-deco br"></div>
-        <div class="iframe-topbar">
-          <div class="topbar-dots">
-            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-          </div>
-          <div class="topbar-url">abdulkhalekak.github.io/Fb-id-relece-/</div>
-          <div class="topbar-secure"><i class="fas fa-lock"></i>SECURE</div>
-        </div>
-        <div class="iframe-loading" id="load3">
-          <div class="loader-ring"></div>
-          <div class="loader-text">LOADING MODULE...</div>
-        </div>
-        <iframe src="https://abdulkhalekak.github.io/Fb-id-relece-/" title="FB ID Release"
-          onload="hideLoader('load3')" loading="lazy"></iframe>
-      </div>
+        <iframe src="https://abdulkhalekak.github.io/Fb-id-relece-/" title="FB ID Release"></iframe>
     </div>
 
     <!-- ফেসবুক লাইভ চেকার -->
     <div id="tab4" class="tab-content">
-      <div class="info-banner">
-        <div class="info-left">
-          <i class="fab fa-facebook-square"></i>
-          ফেসবুক অ্যাকাউন্ট সচল (Live) নাকি নষ্ট (Die) — রিয়েলটাইম চেক
+        <div class="info-note-wrapper">
+            <div class="info-note">
+                <i class="fab fa-facebook-square"></i> ফেসবুক অ্যাকাউন্ট সচল (Live) নাকি নষ্ট (Die) চেক করুন
+            </div>
+            <div class="badge-pro">ফাস্ট চেক</div>
         </div>
-        <div class="info-right">
-          <span class="tag-chip tag-live"><span class="blink"></span>LIVE CHECK</span>
-        </div>
-      </div>
-      <div class="iframe-shell">
-        <div class="corner-deco tl"></div><div class="corner-deco tr"></div>
-        <div class="corner-deco bl"></div><div class="corner-deco br"></div>
-        <div class="iframe-topbar">
-          <div class="topbar-dots">
-            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-          </div>
-          <div class="topbar-url">dongvanmmo.com/check-live-fb/</div>
-          <div class="topbar-secure"><i class="fas fa-lock"></i>SECURE</div>
-        </div>
-        <div class="iframe-loading" id="load4">
-          <div class="loader-ring"></div>
-          <div class="loader-text">LOADING MODULE...</div>
-        </div>
-        <iframe src="https://dongvanmmo.com/check-live-fb/" title="Facebook Live Checker"
-          onload="hideLoader('load4')" loading="lazy"></iframe>
-      </div>
+        <iframe src="https://dongvanmmo.com/check-live-fb/" title="Facebook Live Checker"></iframe>
     </div>
 
-    <!-- ইন্সটাগ্রাম লাইভ চেকার -->
+    <!-- ইনস্টাগ্রাম লাইভ চেকার -->
     <div id="tab5" class="tab-content">
-      <div class="info-banner">
-        <div class="info-left">
-          <i class="fab fa-instagram-square"></i>
-          ইনস্টাগ্রাম অ্যাকাউন্ট সচল (Live) নাকি নষ্ট (Die) — রিয়েলটাইম যাচাই
+        <div class="info-note-wrapper">
+            <div class="info-note">
+                <i class="fab fa-instagram-square"></i> ইনস্টাগ্রাম অ্যাকাউন্ট সচল (Live) নাকি নষ্ট (Die) যাচাই করুন
+            </div>
+            <div class="badge-pro">রিয়েল-টাইম</div>
         </div>
-        <div class="info-right">
-          <span class="tag-chip tag-live"><span class="blink"></span>LIVE CHECK</span>
-        </div>
-      </div>
-      <div class="iframe-shell">
-        <div class="corner-deco tl"></div><div class="corner-deco tr"></div>
-        <div class="corner-deco bl"></div><div class="corner-deco br"></div>
-        <div class="iframe-topbar">
-          <div class="topbar-dots">
-            <span class="dot-r"></span><span class="dot-y"></span><span class="dot-g"></span>
-          </div>
-          <div class="topbar-url">dongvanmmo.com/check-live-ig/</div>
-          <div class="topbar-secure"><i class="fas fa-lock"></i>SECURE</div>
-        </div>
-        <div class="iframe-loading" id="load5">
-          <div class="loader-ring"></div>
-          <div class="loader-text">LOADING MODULE...</div>
-        </div>
-        <iframe src="https://dongvanmmo.com/check-live-ig/" title="Instagram Live Checker"
-          onload="hideLoader('load5')" loading="lazy"></iframe>
-      </div>
+        <iframe src="https://dongvanmmo.com/check-live-ig/" title="Instagram Live Checker"></iframe>
     </div>
-
-    <!-- FOOTER -->
-    <footer class="main-footer">
-      <div class="footer-brand">
-        <i class="fas fa-shield-halved"></i>
-        RMZ TEAM · v2.0.0 · সুরক্ষিত ও দ্রুত প্ল্যাটফর্ম
-      </div>
-      <div class="footer-links">
-        <a href="https://t.me/realmoneyincomezone" target="_blank" rel="noopener" class="footer-link">
-          <i class="fab fa-telegram-plane"></i>TELEGRAM
-        </a>
-        <span class="footer-link" style="cursor:default;">
-          <i class="fas fa-circle" style="color:var(--accent-green);font-size:0.5rem;"></i>
-          ALL SYSTEMS NORMAL
-        </span>
-      </div>
-    </footer>
-
-  </div><!-- /main-card -->
-</div><!-- /app-shell -->
-
-<!-- FLOATING ACTION BUTTON -->
-<div class="fab-container">
-  <div class="fab-label">JOIN TELEGRAM</div>
-  <a href="https://t.me/realmoneyincomezone" target="_blank" rel="noopener noreferrer" class="fab-btn" aria-label="Join Telegram">
-    <i class="fab fa-telegram-plane"></i>
-  </a>
+    <div class="footer-note">
+        <i class="fas fa-lock"></i> RMZ TEAM | নিরাপদ ও দ্রুত টুলস প্ল্যাটফর্ম
+    </div>
 </div>
 
-<!-- TOAST -->
-<div id="copyToast" class="toast">
-  <i class="fas fa-check-circle"></i>
-  <span id="toastMsg">কপি হয়েছে!</span>
+<div class="telegram-float">
+    <a href="https://t.me/realmoneyincomezone" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">
+        <div class="telegram-btn">
+            <i class="fab fa-telegram-plane"></i>
+        </div>
+    </a>
+</div>
+
+<div id="copyToast" class="copy-toast">
+    <i class="fas fa-check-circle"></i> কপি হয়েছে!
 </div>
 
 <script>
-(function () {
-  'use strict';
-
-  /* ─── TAB SWITCHING ─── */
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const tabContents = document.querySelectorAll('.tab-content');
-
-  function activateTab(tabId) {
-    tabContents.forEach(c => c.classList.remove('active'));
-    tabBtns.forEach(b => b.classList.remove('active'));
-    const content = document.getElementById(tabId);
-    const btn = document.querySelector(`[data-tab="${tabId}"]`);
-    if (content) content.classList.add('active');
-    if (btn) btn.classList.add('active');
-    try { localStorage.setItem('rmz_tab', tabId); } catch (e) {}
-  }
-
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const id = btn.getAttribute('data-tab');
-      if (id) activateTab(id);
-    });
-  });
-
-  // Restore last tab
-  try {
-    const last = localStorage.getItem('rmz_tab');
-    if (last && document.getElementById(last)) activateTab(last);
-  } catch (e) {}
-
-  /* ─── IFRAME LOADER HIDE ─── */
-  window.hideLoader = function (id) {
-    const el = document.getElementById(id);
-    if (el) {
-      el.classList.add('hidden');
-      setTimeout(() => el.remove(), 500);
-    }
-  };
-
-  /* ─── TOAST ─── */
-  let toastTimer;
-  window.showToast = function (msg = 'কপি হয়েছে!') {
-    const toast = document.getElementById('copyToast');
-    const msgEl = document.getElementById('toastMsg');
-    if (!toast) return;
-    msgEl.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toast.classList.remove('show'), 2200);
-  };
-
-  /* ─── GLOBAL COPY DETECTION ─── */
-  document.addEventListener('copy', () => setTimeout(() => window.showToast('📋 কপি সম্পন্ন!'), 60));
-
-  /* ─── POSTMESSAGE FROM IFRAMES ─── */
-  window.addEventListener('message', (e) => {
-    if (e.data && typeof e.data === 'object') {
-      if (e.data.type === 'COPY_SUCCESS' || e.data.action === 'copied') {
-        window.showToast(e.data.message || '✅ কপি সম্পন্ন!');
-      }
-    }
-  });
-
-  /* ─── IFRAME CROSS-ORIGIN COPY INJECT (best-effort) ─── */
-  document.querySelectorAll('iframe').forEach(iframe => {
-    iframe.addEventListener('load', () => {
-      try {
-        const doc = iframe.contentDocument || iframe.contentWindow?.document;
-        if (!doc) return;
-        doc.addEventListener('copy', () => setTimeout(() => window.showToast('📄 টুল থেকে কপি!'), 80));
-      } catch (err) { /* cross-origin — expected */ }
-    });
-  });
-
-  /* ─── KEYBOARD SHORTCUT: 1-5 to switch tabs ─── */
-  document.addEventListener('keydown', (e) => {
-    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-    const n = parseInt(e.key);
-    if (n >= 1 && n <= 5) activateTab(`tab${n}`);
-  });
-
-  console.log('%cRMZ TEAM · Tools Hub v2.0', 'color:#00E5FF;font-family:monospace;font-size:14px;font-weight:700;');
-  console.log('%c// Secure · Fast · Professional', 'color:#3D5275;font-family:monospace;font-size:11px;');
-})();
+    (function(){
+        // প্রফেশনাল ট্যাব সুইচিং
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = document.querySelectorAll('.tab-content');
+        
+        function switchTab(tabId) {
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            tabBtns.forEach(btn => {
+                btn.classList.remove('active');
+            });
+            const activeContent = document.getElementById(tabId);
+            if(activeContent) activeContent.classList.add('active');
+            const activeBtn = Array.from(tabBtns).find(btn => btn.getAttribute('data-tab') === tabId);
+            if(activeBtn) activeBtn.classList.add('active');
+        }
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tabId = btn.getAttribute('data-tab');
+                if(tabId) switchTab(tabId);
+                e.preventDefault();
+            });
+        });
+        
+        // কপি টোস্ট ফাংশন globally
+        window.showCopyToast = function(message = "✅ কপি হয়েছে!") {
+            const toast = document.getElementById('copyToast');
+            if(!toast) return;
+            toast.innerHTML = `<i class="fas fa-copy"></i> ${message}`;
+            toast.classList.remove('show');
+            // force reflow
+            void toast.offsetWidth;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+                // রিসেট আইকন
+                setTimeout(() => {
+                    toast.innerHTML = `<i class="fas fa-check-circle"></i> কপি হয়েছে!`;
+                }, 300);
+            }, 1800);
+        };
+        
+        // iframe এর মধ্যে copy ইভেন্ট ক্যাপচার (CORS সীমাবদ্ধতা সত্ত্বেও চেষ্টা)
+        const iframes = document.querySelectorAll('iframe');
+        
+        function tryInjectCopyListener(iframeElement) {
+            try {
+                const iframeDoc = iframeElement.contentDocument || iframeElement.contentWindow?.document;
+                if (!iframeDoc) return;
+                // কপি ইভেন্ট লিসেনার
+                iframeDoc.addEventListener('copy', () => {
+                    setTimeout(() => {
+                        window.showCopyToast("📋 কপি সফল!");
+                    }, 80);
+                });
+                // ক্লিকের মাধ্যমে বাটন ইভেন্ট (অনেক টুলে কাস্টম কপি থাকে)
+                iframeDoc.body.addEventListener('click', (e) => {
+                    const target = e.target;
+                    // চেক করা হচ্ছে ক্লিক করা এলিমেন্টে copy বা ক্লিপবোর্ড রিলেটেড ক্লাস
+                    let copyElement = target.closest('[onclick*="copy"], .copy-btn, [data-copy], .btn-copy, .copy-text, [onclick*="Clipboard"]');
+                    if (copyElement || (target.innerText && (target.innerText.toLowerCase().includes('copy') || target.getAttribute('title')?.toLowerCase().includes('copy')))) {
+                        setTimeout(() => {
+                            window.showCopyToast("🔁 টেক্সট কপি হয়েছে!");
+                        }, 150);
+                    }
+                });
+                // অতিরিক্ত: যেকোনো execCommand বা writeText হুক করা যায় না কিন্তু ব্যবহারকারীর কপি হলে টোস্ট দেখবে
+            } catch(e) {
+                // CORS বা cross-origin policy কারণে iframe অ্যাক্সেস নাই - কোনো সমস্যা নাই
+                console.debug("Iframe cors restriction:", iframeElement.src);
+            }
+        }
+        
+        iframes.forEach(iframe => {
+            if(iframe.addEventListener) {
+                iframe.addEventListener('load', function onLoad() {
+                    tryInjectCopyListener(iframe);
+                    // পুনরায় লোড হলে ওয়ার্নিং এভয়েড
+                    iframe.removeEventListener('load', onLoad);
+                });
+                // যদি ইতিমধ্যে লোডেড হয়ে থাকে
+                if(iframe.contentDocument && iframe.contentDocument.readyState === 'complete') {
+                    tryInjectCopyListener(iframe);
+                }
+            }
+        });
+        
+        // ডকুমেন্টে গ্লোবাল কপি সাপোর্ট (বাইরের অংশের জন্য)
+        document.addEventListener('copy', function() {
+            setTimeout(() => {
+                window.showCopyToast("📄 কপি হয়েছে!");
+            }, 50);
+        });
+        
+        // কর্ডোভা বা মোবাইলের জন্য ক্লিপবোর্ড এপি (প্লাগইন থাকলে)
+        document.addEventListener('deviceready', function() {
+            console.log("Cordova device ready | RMZ Tools");
+            if(window.cordova && window.cordova.plugins && window.cordova.plugins.clipboard) {
+                window.cordova.plugins.clipboard.on('textCopied', function() {
+                    window.showCopyToast("✅ কপি (মোবাইল)");
+                });
+            }
+        });
+        
+        // নোটিফিকেশনে টেলিগ্রাম ফ্লোটিংয়ে স্পর্শ ফিডব্যাক
+        const tgBtn = document.querySelector('.telegram-btn');
+        if(tgBtn) {
+            tgBtn.addEventListener('click', () => {
+                // ইতোমধ্যে লিংকে href আছেই, কিন্তু অ্যানিমেশন রাখা যায়
+                console.log("Telegram channel redirect");
+            });
+        }
+        
+        // for better iframe UX: প্রতিটি ট্যাবে iframe রিলোড নাই কিন্তু সোর্স ঠিক আছে
+        // অতিরিক্ত: লোকাল স্টোরেজে ট্যাব মেমরি অপশন (ঐচ্ছিক)
+        const lastTab = localStorage.getItem('rmz_last_active_tab');
+        if(lastTab && document.getElementById(lastTab)) {
+            switchTab(lastTab);
+        }
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const tid = btn.getAttribute('data-tab');
+                if(tid) localStorage.setItem('rmz_last_active_tab', tid);
+            });
+        });
+        
+        // কিছু iframe এ manually dynamic copy notification handle করার জন্য parent থেকে মেসেজ ইভেন্ট
+        window.addEventListener('message', (event) => {
+            if(event.data && typeof event.data === 'object') {
+                if(event.data.type === 'COPY_SUCCESS' || event.data.action === 'copied') {
+                    window.showCopyToast(event.data.message || "✅ টুল থেকে কপি সম্পন্ন!");
+                }
+            }
+        });
+        
+        // নিচে কাস্টম ফাংশন live-checkers এর স্টাইল enhance
+        console.log("RMZ Tools Professional UI Loaded");
+    })();
 </script>
 </body>
 </html>
