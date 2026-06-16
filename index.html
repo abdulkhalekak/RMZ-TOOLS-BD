@@ -109,24 +109,30 @@
             letter-spacing: 0.3px;
         }
 
-        /* ট্যাবস - মডার্ন গ্লাসমরফিজম, এখন হেডারের নিচে আটকে থাকবে না কারণ হেডার স্টিকি, এরা সাধারণত স্ক্রল করলে চলে যাবে, কিন্তু হেডার থাকবে */
-        .tabs {
+        /* টুলস ড্রপডাউন এবং ট্যাবস */
+        .nav-bar {
             display: flex;
             flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
             background: rgba(30, 41, 59, 0.6);
             backdrop-filter: blur(8px);
-            padding: 6px 12px 0 12px;
-            gap: 8px;
+            padding: 6px 20px;
             border-bottom: 1px solid rgba(71, 85, 105, 0.5);
             position: relative;
             z-index: 90;
+            gap: 10px;
+        }
+        .tabs-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
         }
         .tab-btn {
-            flex: 1 1 auto;
-            min-width: 130px;
             background: transparent;
             border: none;
-            padding: 12px 12px;
+            padding: 12px 14px;
             font-size: 0.9rem;
             font-weight: 600;
             color: #CBD5E1;
@@ -153,6 +159,89 @@
         }
         .tab-btn.active i {
             color: #60A5FA;
+        }
+
+        /* ড্রপডাউন বাটন */
+        .dropdown-tools {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-btn {
+            background: linear-gradient(145deg, #1E293B, #0F172A);
+            color: #F8FAFC;
+            border: 1px solid #3B82F6;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        .dropdown-btn:hover {
+            background: #1E293B;
+            box-shadow: 0 6px 14px rgba(59,130,246,0.3);
+            border-color: #60A5FA;
+        }
+        .dropdown-btn i {
+            font-size: 1rem;
+            color: #3B82F6;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 115%;
+            background: #1E293B;
+            backdrop-filter: blur(10px);
+            min-width: 260px;
+            border-radius: 1.2rem;
+            box-shadow: 0 20px 35px -8px rgba(0,0,0,0.6);
+            padding: 8px 0;
+            z-index: 1200;
+            border: 1px solid rgba(59,130,246,0.3);
+            overflow: hidden;
+        }
+        .dropdown-content.show {
+            display: block;
+            animation: dropSlide 0.25s ease;
+        }
+        @keyframes dropSlide {
+            from { opacity: 0; transform: translateY(-8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .dropdown-content a {
+            color: #E2E8F0;
+            padding: 12px 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.15s;
+            border-left: 3px solid transparent;
+        }
+        .dropdown-content a i {
+            width: 24px;
+            color: #60A5FA;
+            font-size: 1rem;
+        }
+        .dropdown-content a:hover {
+            background: #0F172A;
+            border-left-color: #3B82F6;
+            color: white;
+        }
+        .dropdown-content a:active {
+            background: #111827;
+        }
+        .dropdown-divider {
+            height: 1px;
+            background: #334155;
+            margin: 6px 16px;
         }
 
         /* ট্যাব কন্টেন্ট */
@@ -206,14 +295,14 @@
         .badge-pro {
             background: #10B981;
             color: white;
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 40px;
             font-size: 0.7rem;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
 
-        /* iframe স্টাইল - প্রিমিয়াম লুক */
+        /* iframe স্টাইল */
         iframe {
             width: 100%;
             min-height: 65vh;
@@ -229,7 +318,7 @@
             }
         }
 
-        /* ফ্লোটিং টেলিগ্রাম বাটন - এলিগ্যান্ট */
+        /* ফ্লোটিং টেলিগ্রাম বাটন */
         .telegram-float {
             position: fixed;
             bottom: 24px;
@@ -301,18 +390,36 @@
         }
 
         /* রেসপন্সিভ */
-        @media (max-width: 680px) {
-            body {
-                padding: 0;
+        @media (max-width: 760px) {
+            .nav-bar {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 8px 12px;
+            }
+            .tabs-wrapper {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                gap: 4px;
+                padding-bottom: 4px;
             }
             .tab-btn {
-                min-width: auto;
-                padding: 10px 8px;
+                padding: 8px 12px;
                 font-size: 0.7rem;
-                gap: 6px;
+                white-space: nowrap;
             }
             .tab-btn i {
                 font-size: 0.9rem;
+            }
+            .dropdown-btn {
+                width: 100%;
+                justify-content: center;
+                padding: 10px;
+            }
+            .dropdown-content {
+                right: auto;
+                left: 0;
+                width: 100%;
+                min-width: unset;
             }
             .header h1 {
                 font-size: 1.3rem;
@@ -340,10 +447,6 @@
             }
         }
 
-        /* লোডিং স্টাইল enhance */
-        iframe[src] {
-            transition: opacity 0.2s;
-        }
         .footer-note {
             text-align: center;
             margin-top: 20px;
@@ -353,8 +456,6 @@
             padding: 16px 0;
             background: rgba(15, 23, 42, 0.5);
         }
-
-        /* কন্টেন্ট এরিয়া যেন স্ক্রোল করে আর হেডার স্টিকি থাকে */
         .main-content {
             flex: 1;
         }
@@ -363,7 +464,7 @@
 <body>
 
 <div class="container">
-    <!-- হেডার এখন স্টিকি, স্ক্রোল করলেও উপরে থাকবে -->
+    <!-- হেডার স্টিকি -->
     <div class="header">
         <h1>
             <i class="fas fa-crown"></i> 
@@ -372,22 +473,40 @@
         <p><i class="fas fa-bolt"></i> প্রফেশনাল টুলস হাব | সিকিউর ও ফাস্ট</p>
     </div>
     
-    <div class="tabs">
-        <button class="tab-btn active" data-tab="tab1">
-            <i class="fas fa-shield-alt"></i> <span>২এফএ জেনারেটর</span>
-        </button>
-        <button class="tab-btn" data-tab="tab2">
-            <i class="fas fa-cookie-bite"></i> <span>কুকি টু ইউআইডি</span>
-        </button>
-        <button class="tab-btn" data-tab="tab3">
-            <i class="fas fa-unlock-alt"></i> <span>ফেইসবুক আইডি রিলিজ</span>
-        </button>
-        <button class="tab-btn" data-tab="tab4">
-            <i class="fab fa-facebook"></i> <span>ফেসবুক লাইভ চেকার</span>
-        </button>
-        <button class="tab-btn" data-tab="tab5">
-            <i class="fab fa-instagram"></i> <span>ইন্সটাগ্রাম লাইভ চেকার</span>
-        </button>
+    <!-- নেভিগেশন: টুলস ড্রপডাউন + ট্যাব বাটন -->
+    <div class="nav-bar">
+        <div class="dropdown-tools">
+            <button class="dropdown-btn" id="dropdownToggle">
+                <i class="fas fa-th-list"></i> টুলস <i class="fas fa-chevron-down" style="font-size:0.7rem; margin-left:6px;"></i>
+            </button>
+            <div class="dropdown-content" id="dropdownMenu">
+                <a href="#" data-tab="tab1"><i class="fas fa-shield-alt"></i> ২এফএ জেনারেটর</a>
+                <a href="#" data-tab="tab2"><i class="fas fa-cookie-bite"></i> কুকি টু ইউআইডি</a>
+                <a href="#" data-tab="tab3"><i class="fas fa-unlock-alt"></i> ফেইসবুক আইডি রিলিজ</a>
+                <a href="#" data-tab="tab4"><i class="fab fa-facebook"></i> ফেসবুক লাইভ চেকার</a>
+                <a href="#" data-tab="tab5"><i class="fab fa-instagram"></i> ইন্সটাগ্রাম লাইভ চেকার</a>
+                <div class="dropdown-divider"></div>
+                <a href="https://hitools.pro/read-hotmail" target="_blank"><i class="fas fa-envelope"></i> রিড হটমেইল</a>
+            </div>
+        </div>
+
+        <div class="tabs-wrapper">
+            <button class="tab-btn active" data-tab="tab1">
+                <i class="fas fa-shield-alt"></i> <span>২এফএ</span>
+            </button>
+            <button class="tab-btn" data-tab="tab2">
+                <i class="fas fa-cookie-bite"></i> <span>কুকি টু ইউআইডি</span>
+            </button>
+            <button class="tab-btn" data-tab="tab3">
+                <i class="fas fa-unlock-alt"></i> <span>আইডি রিলিজ</span>
+            </button>
+            <button class="tab-btn" data-tab="tab4">
+                <i class="fab fa-facebook"></i> <span>এফবি লাইভ</span>
+            </button>
+            <button class="tab-btn" data-tab="tab5">
+                <i class="fab fa-instagram"></i> <span>আইজি লাইভ</span>
+            </button>
+        </div>
     </div>
 
     <div class="main-content">
@@ -465,7 +584,30 @@
 
 <script>
     (function(){
-        // প্রফেশনাল ট্যাব সুইচিং
+        // ড্রপডাউন টগল
+        const dropdownToggle = document.getElementById('dropdownToggle');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        if (dropdownToggle && dropdownMenu) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
+            document.addEventListener('click', function() {
+                dropdownMenu.classList.remove('show');
+            });
+            // ড্রপডাউন আইটেম ক্লিক
+            dropdownMenu.querySelectorAll('a[data-tab]').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const tabId = this.getAttribute('data-tab');
+                    if (tabId) switchTab(tabId);
+                    dropdownMenu.classList.remove('show');
+                });
+            });
+        }
+
+        // ট্যাব সুইচিং
         const tabBtns = document.querySelectorAll('.tab-btn');
         const tabContents = document.querySelectorAll('.tab-content');
         
@@ -480,6 +622,7 @@
             if(activeContent) activeContent.classList.add('active');
             const activeBtn = Array.from(tabBtns).find(btn => btn.getAttribute('data-tab') === tabId);
             if(activeBtn) activeBtn.classList.add('active');
+            localStorage.setItem('rmz_last_active_tab', tabId);
         }
         
         tabBtns.forEach(btn => {
@@ -490,13 +633,12 @@
             });
         });
         
-        // কপি টোস্ট ফাংশন globally
+        // কপি টোস্ট
         window.showCopyToast = function(message = "✅ কপি হয়েছে!") {
             const toast = document.getElementById('copyToast');
             if(!toast) return;
             toast.innerHTML = `<i class="fas fa-copy"></i> ${message}`;
             toast.classList.remove('show');
-            // force reflow
             void toast.offsetWidth;
             toast.classList.add('show');
             setTimeout(() => {
@@ -507,32 +649,26 @@
             }, 1800);
         };
         
-        // iframe এর মধ্যে copy ইভেন্ট ক্যাপচার (CORS সীমাবদ্ধতা সত্ত্বেও চেষ্টা)
+        // iframe copy listener
         const iframes = document.querySelectorAll('iframe');
-        
         function tryInjectCopyListener(iframeElement) {
             try {
                 const iframeDoc = iframeElement.contentDocument || iframeElement.contentWindow?.document;
                 if (!iframeDoc) return;
                 iframeDoc.addEventListener('copy', () => {
-                    setTimeout(() => {
-                        window.showCopyToast("📋 কপি সফল!");
-                    }, 80);
+                    setTimeout(() => window.showCopyToast("📋 কপি সফল!"), 80);
                 });
                 iframeDoc.body.addEventListener('click', (e) => {
                     const target = e.target;
                     let copyElement = target.closest('[onclick*="copy"], .copy-btn, [data-copy], .btn-copy, .copy-text, [onclick*="Clipboard"]');
                     if (copyElement || (target.innerText && (target.innerText.toLowerCase().includes('copy') || target.getAttribute('title')?.toLowerCase().includes('copy')))) {
-                        setTimeout(() => {
-                            window.showCopyToast("🔁 টেক্সট কপি হয়েছে!");
-                        }, 150);
+                        setTimeout(() => window.showCopyToast("🔁 টেক্সট কপি হয়েছে!"), 150);
                     }
                 });
             } catch(e) {
                 console.debug("Iframe cors restriction:", iframeElement.src);
             }
         }
-        
         iframes.forEach(iframe => {
             if(iframe.addEventListener) {
                 iframe.addEventListener('load', function onLoad() {
@@ -546,47 +682,16 @@
         });
         
         document.addEventListener('copy', function() {
-            setTimeout(() => {
-                window.showCopyToast("📄 কপি হয়েছে!");
-            }, 50);
+            setTimeout(() => window.showCopyToast("📄 কপি হয়েছে!"), 50);
         });
         
-        document.addEventListener('deviceready', function() {
-            console.log("Cordova device ready | RMZ Tools");
-            if(window.cordova && window.cordova.plugins && window.cordova.plugins.clipboard) {
-                window.cordova.plugins.clipboard.on('textCopied', function() {
-                    window.showCopyToast("✅ কপি (মোবাইল)");
-                });
-            }
-        });
-        
-        const tgBtn = document.querySelector('.telegram-btn');
-        if(tgBtn) {
-            tgBtn.addEventListener('click', () => {
-                console.log("Telegram channel redirect");
-            });
-        }
-        
+        // স্টোরেজ থেকে শেষ ট্যাব রিস্টোর
         const lastTab = localStorage.getItem('rmz_last_active_tab');
         if(lastTab && document.getElementById(lastTab)) {
             switchTab(lastTab);
         }
-        tabBtns.forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const tid = btn.getAttribute('data-tab');
-                if(tid) localStorage.setItem('rmz_last_active_tab', tid);
-            });
-        });
         
-        window.addEventListener('message', (event) => {
-            if(event.data && typeof event.data === 'object') {
-                if(event.data.type === 'COPY_SUCCESS' || event.data.action === 'copied') {
-                    window.showCopyToast(event.data.message || "✅ টুল থেকে কপি সম্পন্ন!");
-                }
-            }
-        });
-        
-        console.log("RMZ Tools Professional UI Loaded | Header is now sticky!");
+        console.log("RMZ Tools Unique UI Loaded | Dropdown added");
     })();
 </script>
 </body>
